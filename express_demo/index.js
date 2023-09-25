@@ -1,9 +1,12 @@
+const startUpDebugger = require('debug')("app:startup");
+const dbDebugger = require('debug')('app:db');
 const config = require('config');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const Joi = require('joi');
 const express = require('express');
 const logger = require('./logger');
+
 const app = express();
 
 app.use(express.json());
@@ -18,8 +21,11 @@ console.log(`mail password: ${config.get('mail.password')}`);
 
 if (app.get('env') === "development") {
     app.use(morgan("tiny"));
-    console.log("morgan enabled.....");
+    startUpDebugger("morgan enabled.....");
 }
+
+// if it connects to a database..
+dbDebugger('Connecting to the database......');
 
 app.use(logger);
 
