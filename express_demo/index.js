@@ -9,6 +9,9 @@ const logger = require('./logger');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', './views') // default
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -36,7 +39,7 @@ const courses = [
     {id: 4, name: "Full Stack Web Development"}
 ];
 app.get('/', (req, res) => {
-    res.send('Hello World!!!');
+    res.render('index', { title: 'My Express App', message: "Hello Babe!!!"});
 });
 
 app.get('/api/courses', (req, res) => {
