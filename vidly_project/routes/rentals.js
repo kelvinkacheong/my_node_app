@@ -1,32 +1,43 @@
 const express = require('express');
 const router = express.Router();
-const { Movie, validateMovie } = require('../models/movie');
-const { Genre } = require('../models/genre');
+const { Rental, validateRental } = require('../models/rental');
+const { Movie } = require('../models/movie');
+const { Customer } = require('../models/customer');
 
 router.get('/', async (req, res) => {
-  const movies = await Movie.find().sort({ name: 1 });
-  res.send(movies);
+  const rentals = await Rental.find().sort({ dateOut: -1 });
+  res.send(rentals);
 });
 
 router.post('/', async (req, res) => {
-  const { error } = validateMovie(req.body); 
+  const { error } = validateRental(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
-  const genre = await Genre.findById(req.body.genreId);
-  if (!genre) return res.status(404).send("invalid genre.");
+  const customer = await Customer.findById(req.body.customerId);
+  if (!customer) return res.status(404).send("invalid customer ID.");
 
-  const movie = new Movie({
-    title: req.body.title,
-    genre: {
-        _id: genre._id,
-        name: genre.name
+  const movie = await Movie.findById(req.body.movieId);
+  if (!movie) return res.status(404).send("invalid movie ID.");
+
+  let rental = new Rental({
+    customer: {
+      _id: customer._id,
+      name: customer.name,
+      phone: customer.phone
     },
-    numberInStock: req.body.numberInStock,
-    dailyRentalRate: req.body.dailyRentalRate
+    movie: {
+      _id: movie._id,
+      title: movie.title,
+      dailyRentalRate: movie.dailyRentalRate
+    },
   });
 
-  await movie.save();
-  res.send(movie);
+  rental = await rental.save();
+
+  movie.numberInStock--;
+  movie.save();
+
+  res.send(rental);
 });
 
 router.put('/:id', async (req, res) => {
