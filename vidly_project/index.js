@@ -15,11 +15,18 @@ const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
 
+process.on('uncaughtException', (ex) => {
+    console.log('WE GOT AN UNCAUGHT EXPECTION');
+    winston.error(ex.message, ex);
+})
+
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 winston.add(new winston.transports.MongoDB({ db: "mongodb://127.0.0.1:27017/vidly", options: {
         useUnifiedTopology: true,
     } 
 }));
+
+throw new Error('Something wrong during start up.');
 
 if (!config.get('jwtPrivateKey')) {
     console.log('FATAL ERROR: jwtPrivateKey is not defined.');
