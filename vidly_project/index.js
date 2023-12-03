@@ -16,9 +16,14 @@ const express = require('express');
 const app = express();
 
 process.on('uncaughtException', (ex) => {
-    console.log('WE GOT AN UNCAUGHT EXPECTION');
     winston.error(ex.message, ex);
-})
+    process.exit(1);
+});
+
+process.on('unhandledRejection', (ex) => {
+    winston.error(ex.message, ex);
+    process.exit(1);
+});
 
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 winston.add(new winston.transports.MongoDB({ db: "mongodb://127.0.0.1:27017/vidly", options: {
@@ -26,7 +31,8 @@ winston.add(new winston.transports.MongoDB({ db: "mongodb://127.0.0.1:27017/vidl
     } 
 }));
 
-throw new Error('Something wrong during start up.');
+const p = Promise.reject(new Error('Something failed miserabily!'));
+p.then(() => console.log('done'));
 
 if (!config.get('jwtPrivateKey')) {
     console.log('FATAL ERROR: jwtPrivateKey is not defined.');
