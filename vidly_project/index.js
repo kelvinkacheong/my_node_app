@@ -1,8 +1,6 @@
 require('express-async-errors');
 const winston = require('winston');
 require('winston-mongodb');
-const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
 const app = express();
 
@@ -24,6 +22,7 @@ winston.add(new winston.transports.MongoDB({ db: "mongodb://127.0.0.1:27017/vidl
 require('./startup/routes')(app);
 require('./startup/db')();
 require('./startup/config')();
+require('./startup/validation')();
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(port, () => winston.info(`Listening on port ${port}...`));
