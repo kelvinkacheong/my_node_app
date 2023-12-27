@@ -24,9 +24,6 @@ winston.add(new winston.transports.MongoDB({ db: "mongodb://127.0.0.1:27017/vidl
 require('./startup/routes')(app);
 require('./startup/db')();
 require('./startup/config')();
-require('./startup/routes')(app);
-require('./startup/db')();
-require('./startup/config')();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
