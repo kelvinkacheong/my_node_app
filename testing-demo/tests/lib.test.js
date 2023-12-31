@@ -30,3 +30,12 @@ describe('getCurrencies', () => {
     expect(result).toEqual(expect.arrayContaining(['EUR', 'USD', 'AUD']));
   });
 });
+
+describe('getProduct', () => {
+  it('should return the product with the given id', () => {
+    const result = lib.getProduct(1);
+    // expect(result).toEqual({ id: 1, price: 10 }); // exactly the same key-value pairs
+    expect(result).toMatchObject({ id: 1, price: 10 }); // includes these key-value pairs in the object will pass
+    expect(result).toHaveProperty('id', 1);
+  });
+});
