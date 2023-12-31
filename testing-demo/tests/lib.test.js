@@ -15,4 +15,11 @@ describe('absolute', () => {
     const result = lib.absolute(0);
     expect(result).toBe(0);
   });
-})
+});
+
+describe('greet', () => {
+  it('should return the greeting message', () => {
+    const result = lib.greet('Kelvin');
+    expect(result).toMatch(/Kelvin/);
+  });
+});
