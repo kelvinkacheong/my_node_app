@@ -13,8 +13,8 @@ describe('auth middleware', () => {
 
   let token;
 
-  const exec = () => {
-    return request(server)
+  const exec = async () => {
+    return await request(server)
       .post('/api/genres')
       .set('x-auth-token', token)
       .send({ name: 'genre1' });
