@@ -26,7 +26,7 @@ router.post('/', auth, async(req, res) => {
     $inc: { numberInStock: 1 }
   });
 
-  res.status(200).send('Valid request! Returned this movie.');
+  res.status(200).send(rental);
 });
 
 module.exports = router;
