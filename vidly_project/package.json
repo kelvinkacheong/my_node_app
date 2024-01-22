@@ -4,16 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --coverage --maxWorkers=1"
+    "test": "jest --watchAll --verbose --coverage --maxWorkers=1",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "v20.8.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "compression": "^1.7.4",
     "config": "^3.3.9",
     "express": "^4.16.2",
     "express-async-errors": "^3.1.1",
+    "helmet": "^7.1.0",
     "joi": "^13.1.0",
     "joi-objectid": "^4.0.2",
     "jsonwebtoken": "^9.0.2",
